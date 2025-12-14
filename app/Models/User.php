@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'company_name',
+        'company_description',
+        'website',
+        'industry',
+        'ideal_industries',
+        'ideal_company_sizes',
+        'ideal_use_cases',
+        'disqualifiers',
+        'additional_context',
     ];
 
     /**
@@ -34,8 +44,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -43,6 +51,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'ideal_industries' => 'array',
+            'ideal_company_sizes' => 'array',
         ];
+    }
+
+    public function leads(): HasMany
+    {
+        return $this->hasMany(Lead::class);
     }
 }
