@@ -22,4 +22,6 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    RewriteRule ^\.env(?:\..*)?$ - [L,R=404,NC]
 </IfModule>
